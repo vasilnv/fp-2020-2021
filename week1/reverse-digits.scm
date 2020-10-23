@@ -1,0 +1,13 @@
+(define (reverse-digits number)
+  (define (helper curr-num num)
+    (if (= (quotient num 10) 0)
+        (+ (* curr-num 10) num)
+        (helper (+ (* curr-num 10) (remainder num 10)) (quotient num 10))
+    )
+  )
+  (helper 0 number)
+)
+
+(define (palindrom num)
+  (= (reverse-digits num) num)
+)
