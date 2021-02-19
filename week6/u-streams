@@ -1,0 +1,10 @@
+#lang racket/base
+(define (delay x)
+  (lambda() x))
+
+(define (force x)
+  (x))
+
+(define (cons-stream a b)
+  (cons a (delay b)))
+
