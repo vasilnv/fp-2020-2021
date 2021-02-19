@@ -1,0 +1,90 @@
+(define (accumulate op term init a next b)
+  (define (loop i)
+    (if (> i b)
+      init
+      (op (term i) (loop (next i)))))
+  (loop a))
+
+(define (up-left x y) (display "\u250C"))
+(define (up-right x y) (display "\u2510")(display " "))
+(define (down-left x y) (display "\u2514"))
+(define (down-right x y) (display "\u2518")(display " "))
+(define (horizontal x y) (display "\u2500")(display "\u2500"))
+(define (vertical x y) (display "\u2502") (display " "))
+
+(define (draw-line x n)
+  (if (> x 1)
+      (accumulate (lambda (i n) (vertical i n))
+              (lambda (i) i)
+              (vertical x n)
+              1
+              (lambda (i) (+ i 1))
+              (- x 2))
+      )
+  (up-left x n)
+  (accumulate (lambda (i n) (horizontal i n))
+              (lambda (i) i)
+              (display "\u2500")
+              1
+              (lambda (i) (+ i 1))
+              (* (- n x) 2)
+             )
+  (up-right x n)
+
+  (if (> x 1)
+      (accumulate (lambda (i n) (vertical i n))
+              (lambda (i) i)
+              (vertical x n)
+              1
+              (lambda (i) (+ i 1))
+              (- x 2))
+      )
+
+  (display "\n")
+  )
+
+(define (draw-down-line x n)
+  (if (> x 1)
+      (accumulate (lambda (i n) (vertical i n))
+              (lambda (i) i)
+              (vertical x n)
+              1
+              (lambda (i) (+ i 1))
+              (- x 2))
+      )
+  (down-left x n)
+  (accumulate (lambda (i n) (horizontal i n))
+              (lambda (i) i)
+              (display "\u2500")
+              1
+              (lambda (i) (+ i 1))
+              (* (- n x) 2)
+             )
+  (down-right x n)
+
+  (if (> x 1)
+      (accumulate (lambda (i n) (vertical i n))
+              (lambda (i) i)
+              (vertical x n)
+              1
+              (lambda (i) (+ i 1))
+              (- x 2))
+      )
+  (display "\n")
+  )
+
+
+(define (squares n)
+  (accumulate (lambda (x y) (draw-line x n))
+                (lambda (x) (+ (- n x) 1))
+                (draw-line 1 n)
+                1
+                (lambda (x) (+ x 1))
+                (- n 1))
+  (accumulate (lambda (x y) (draw-down-line x n))
+                (lambda (x) x)
+                (draw-down-line n n)
+                1
+                (lambda (x) (+ x 1))
+                (- n 1))
+  )
