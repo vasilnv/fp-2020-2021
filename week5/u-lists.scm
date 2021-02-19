@@ -1,0 +1,40 @@
+(define (drop n lst)
+  (define (helper i res)
+    (if (= i n)
+        res
+        (helper (+ i 1) (cdr res))))
+  (helper 0 lst))
+
+(define (take n lst)
+  (define (helper i res)
+    (if (= i n)
+        '()
+        (cons (car res) (helper (+ i 1) (cdr res)))))
+  (helper 0 lst)
+  )
+
+(define (zip lst1 lst2)
+  (define (helper l1 l2)
+     (if (or (null? l1) (null? l2))
+      '()
+      (cons (cons (car l1) (car l2)) (helper (cdr l1) (cdr l2)))))
+  (helper lst1 lst2))
+
+(define (zipWith f lst1 lst2)
+  (define (helper l1 l2)
+    (if (or (null? l1) (null? l2))
+        '()
+        (cons (f (car l1) (car l2)) (helper (cdr l1) (cdr l2)))))
+  (helper lst1 lst2))
+
+(define (sorted? lst)
+  (define (helper l prev)
+    (if (null? l)
+        #t
+        (if (< (car l) prev)
+            #f
+            (helper (cdr l) (car l)))))
+  (if (not (null? (cdr lst)))
+      (helper (cdr lst) (car lst) )
+      #t)
+    )
